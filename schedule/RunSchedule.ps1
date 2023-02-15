@@ -1,3 +1,7 @@
+#!/powershell/pwsh
+
+Set-Location (Split-Path $MyInvocation.MyCommand.Path)
+
 $NextScheduleReload = [DateTime]::UtcNow
 
 while ($true)
