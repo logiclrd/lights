@@ -1,4 +1,4 @@
-#!/powershell/pwsh
+#!/usr/bin/env /powershell/pwsh
 
 Set-Location (Split-Path $MyInvocation.MyCommand.Path)
 
