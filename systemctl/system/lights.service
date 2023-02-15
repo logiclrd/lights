@@ -1,0 +1,14 @@
+[Unit]
+Description=Lights Controller Scheduling Service
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=10
+User=lights
+ExecStart=/lights/schedule/RunSchedule.ps1
+
+[Install]
+WantedBy=multi-user.target
