@@ -63,4 +63,25 @@ Finally, the actual scheduling engine was written using PowerShell. The current 
 
 The scheduling engine `Run-Schedule.ps1` is invoked using `systemctl`. A definition for a `systemctl` service was created, and a copy of it is committed to this repository in the `systemctl` subdirectory. I created a regular user `lights` to run the persistent script, and the `init` script updates the permission bits on the `value` dev nodes so that code doesn't need to be `root` to control the lights.
 
+You can inspect the current state of the `lights` service with the command:
+
+```
+systemctl status lights
+```
+
+The output of this command includes the log tail, and the log tail includes the basic diagnostic output from the `RunSchedule.ps1` scheduling engine, e.g.:
+
+```
+Feb 15 14:53:49 bananapim64 RunSchedule.ps1[4019]: Current time: 02/15/2023 14:53:49
+Feb 15 14:53:49 bananapim64 RunSchedule.ps1[4019]: Next switch: Turn light # 0 to the ON state at 02/15/2023 15:00:00
+Feb 15 14:53:49 bananapim64 RunSchedule.ps1[4019]: Sleeping for 5 minutes
+Feb 15 14:58:49 bananapim64 RunSchedule.ps1[4019]: Current time: 02/15/2023 14:58:49
+Feb 15 14:58:49 bananapim64 RunSchedule.ps1[4019]: Next switch: Turn light # 0 to the ON state at 02/15/2023 15:00:00
+Feb 15 14:58:49 bananapim64 RunSchedule.ps1[4019]: Sleeping for 71 seconds
+Feb 15 15:00:00 bananapim64 RunSchedule.ps1[4019]: Sending control ON to 0
+Feb 15 15:00:00 bananapim64 RunSchedule.ps1[4019]: Current time: 02/15/2023 15:00:00
+Feb 15 15:00:00 bananapim64 RunSchedule.ps1[4019]: Next switch: Turn light # 2 to the ON state at 02/15/2023 18:00:00
+Feb 15 15:00:00 bananapim64 RunSchedule.ps1[4019]: Sleeping for 90 minutes
+```
+
 I investigated NTP time synchronization as well, because I'm not sure how reliable the wall clock is on a Banana Pi M64, but I've decided to give it the benefit of the doubt. The NTP synchronization code is committed to the repository but I'm not currently using it.
