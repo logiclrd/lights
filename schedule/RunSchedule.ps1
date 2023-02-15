@@ -77,12 +77,12 @@ while ($true)
 				if ($State)
 				{
 					Write-Host "=> Light $Light`: ON"
-					/lights/control/on $Light
+					../control/on $Light
 				}
 				else
 				{
 					Write-Host "=> Light $Light`: OFF"
-					/lights/control/off $Light
+					../control/off $Light
 				}
 			}
 		}
@@ -129,7 +129,7 @@ while ($true)
 
 		if ($NearestControl -eq "ON") { $Command = "on" } else { $Command = "off" }
 
-		$Command = "/lights/control/$Command"
+		$Command = "../control/$Command"
 
 		. $Command $NearestLight
 
