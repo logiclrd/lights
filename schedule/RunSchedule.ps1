@@ -4,6 +4,8 @@ Set-Location (Split-Path $MyInvocation.MyCommand.Path)
 
 $NextScheduleReload = [DateTime]::UtcNow
 
+$Initializing = $true
+
 while ($true)
 {
 	$Now = [DateTime]::Now
@@ -50,6 +52,39 @@ while ($true)
 
 			$Schedule.Add($Schedule[0])
 			$Schedule.RemoveAt(0)
+		}
+
+		if ($Initializing)
+		{
+			$Initializing = $false
+
+			Write-Host "Startup: Running through entire script to determine desired initial state"
+
+			$LightState = @($false, $false, $false, $false)
+
+			foreach ($ScheduleItem in $Schedule)
+			{
+				Write-Host "=> Light $($ScheduleItem.Light) $($ScheduleItem.Control) at $($ScheduleItem.Time)"
+				$LightState[$ScheduleItem.Light] = ($ScheduleItem.Control -eq "ON")
+			}
+
+			Write-Host "Startup: Setting initial state"
+
+			for ($Light = 0; $Light -lt 4; $Light++)
+			{
+				$State = $LightState[$Light]
+
+				if ($State)
+				{
+					Write-Host "=> Light $Light`: ON"
+					/lights/control/on $Light
+				}
+				else
+				{
+					Write-Host "=> Light $Light`: OFF"
+					/lights/control/off $Light
+				}
+			}
 		}
 	}
 
