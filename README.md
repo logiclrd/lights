@@ -6,6 +6,8 @@ I am using a Banana Pi M64 currently:
 * [Banana Pi BPI-M64 Wiki Page](https://wiki.banana-pi.org/Banana_Pi_BPI-M64)
 * [Purchase on Amazon: youyeetoo Banana Pi BPI-M64](https://amazon.ca/dp/B08FZY7JHD)
 
+The first thing I found with this machine is that, unlike a Raspberry Pi, it does not power on automatically. It has a physical "Power" button that you have to press each time you want it to power on. This isn't compatible with using it as an appliance. I did a search on how to make it power on automatically. I found a forum thread where someone said all you have to do is hold down the "Power On" button for 8 seconds and then it'll remember that you want it on all the time. I did this and it appeared to work. :-)
+
 As with any Pi type computer, this requires a Micro SD card to act as the "hard drive". I bought this one:
 
 * [Purchase on Amazon: SanDisk 32GB Extreme microSDHC UHS-1](https://amazon.ca/dp/B06XWMQ81P)
