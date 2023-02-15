@@ -14,6 +14,14 @@ I encountered problems with the Banana Pi M64 overheating while doing such munda
 
 * [Purchase on Amazon: Enokay 8 Pieces 14x12x5.5mm Cooling Copper Heatsink](https://amazon.ca/dp/B014KKY3KI)
 
+Ultimately, what made the biggest difference was altering the OS's power management policies to `powersave`, which wa sdone by putting the line:
+
+```
+GOVERNOR=powersave
+```
+
+...into the file `/etc/default/cpufrequtils`. This application doesn't need a blazing-fast computer, and it probably saves a few pennies of electricity to run it slower. :-)
+
 The lights are controlled with a "hat" with four mains voltage relays on it:
 
 * [Purchase on Amazon: RPi Power Relay Board Expansion Module](https://amazon.ca/dp/B08B681CYD)
