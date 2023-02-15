@@ -1,0 +1,7 @@
+#!/bin/bash
+
+pin=$(cat /lights/pins/$1)
+
+echo 1 > /sys/class/gpio/gpio$pin/value
+
+
