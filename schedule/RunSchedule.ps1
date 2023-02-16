@@ -31,7 +31,8 @@ while ($true)
 			$Light = $Parts[2]
 
 			$Time = [DateTime]::Parse($Time)
-			$Time = $Time - $Time.Date
+
+			$Time = $Today + $Time.TimeOfDay
 
 			$ScheduleItem = [PSCustomObject]::new()
 
@@ -46,9 +47,11 @@ while ($true)
 
 		while ($true)
 		{
-			$NextSwitch = $Today + $Schedule[0].Time
+			$NextSwitch = $Schedule[0].Time
 
 			if ($NextSwitch -ge $Now) { break }
+
+			$Schedule[0].Time = $NextSwitch.AddDays(1)
 
 			$Schedule.Add($Schedule[0])
 			$Schedule.RemoveAt(0)
@@ -90,7 +93,7 @@ while ($true)
 
 	$Next = $Schedule[0]
 
-	$NearestSwitch = $Today + $Next.Time
+	$NearestSwitch = $Next.Time
 	$NearestControl = $Next.Control
 	$NearestLight = $Next.Light
 
@@ -102,7 +105,7 @@ while ($true)
 
 	if ($TimeToNext -gt [TimeSpan]::Zero)
 	{
-		$Delay = $TimeToNext / 2
+		$Delay = [TimeSpan]::FromTicks($TimeToNext.Ticks / 2)
 
 		if ($Delay.TotalMinutes -lt 5) { $Delay = [TimeSpan]::FromMinutes(5) }
 		if ($Delay -gt $TimeToNext) { $Delay = $TimeToNext }
