@@ -33,7 +33,7 @@ In order to avoid aggravating the overheating problem, I purchased an extension 
 * [Purcahse on Amazon: GPIO Cable 40 Pin Female to Female](https://amazon.ca/dp/B07F128VSW)
 * [Purchase on Amazon: IDE 40 Pin Male to Male Hard Drive Adapter](https://amazon.ca/dp/B08XHW7KYC)
 
-As of writing this, the male-to-male adapter has not yet arrived, so I don't actually _know_ that it works for this application. You can also buy Female to Male 40 Pin cables, but for some reason they are considerably more expensive.
+Instead of slapping an adapter on a standard Female to Female cable, you can also buy Female to Male 40 Pin cables, but for some reason they are considerably more expensive. The Male-to-Male adapter shown here seems to work just fine.
 
 With all of these bits assembled, the rest is all in software. I installed Armbian 22.11.0, which has a build linked to from the Banana Pi official Wiki page:
 
