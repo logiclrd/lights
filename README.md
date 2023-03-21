@@ -30,7 +30,7 @@ The lights are controlled with a "hat" with four mains voltage relays on it:
 
 In order to avoid aggravating the overheating problem, I purchased an extension cable to allow the relay board to be physically separate from the Banana Pi board:
 
-* [Purcahse on Amazon: GPIO Cable 40 Pin Female to Female](https://amazon.ca/dp/B07F128VSW)
+* [Purchase on Amazon: GPIO Cable 40 Pin Female to Female](https://amazon.ca/dp/B07F128VSW)
 * [Purchase on Amazon: IDE 40 Pin Male to Male Hard Drive Adapter](https://amazon.ca/dp/B08XHW7KYC)
 
 Instead of slapping an adapter on a standard Female to Female cable, you can also buy Female to Male 40 Pin cables, but for some reason they are considerably more expensive. The Male-to-Male adapter shown here seems to work just fine.
@@ -87,3 +87,5 @@ Feb 15 15:00:00 bananapim64 RunSchedule.ps1[4019]: Sleeping for 90 minutes
 ```
 
 I investigated NTP time synchronization as well, because I'm not sure how reliable the wall clock is on a Banana Pi M64, but I've decided to give it the benefit of the doubt. The NTP synchronization code is committed to the repository but I'm not currently using it.
+
+Finally, this all needs to go into a case. [That's a different project](https://github.com/logiclrd/OpenSCADDesigns/tree/main/Light%20Controller%20Case), involving OpenSCAD and a 3D printer. :-)
