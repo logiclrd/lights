@@ -20,17 +20,7 @@ In my early attempts with the Banana Pi M64, I encountered problems with it over
 
 * [Purchase on Amazon: Enokay 8 Pieces 14x12x5.5mm Cooling Copper Heatsink](https://amazon.ca/dp/B014KKY3KI)
 
-Ultimately, what made the biggest difference was altering the OS's power management policies to `powersave`, which was done by putting the line:
-
-```
-GOVERNOR=powersave
-```
-
-...into the file `/etc/default/cpufrequtils`. This application doesn't need a blazing-fast computer, and it probably saves a few pennies of electricity to run it slower. :-)
-
-I was running Armbian on the Banana Pi M64, but switched to Ubuntu on the Le Potato, and Ubuntu doesn't come with `cpufrequtils` installed. But, it is easy to install with `apt`.
-
-This same configuration can be used with Le Potato.
+Even with heat sinks, the Banana Pi would consistently overheat with the default governor, which defaulted to `performance`. Changing the M64's governor to `powersave` was what finally solved the overheating problem. However, Le Potato's default governor is the more conservative `ondemand`, and it does not seem to have the heat problems of the M64 with the default configuration. (Ubuntu doesn't come with `cpufrequtils` installed. But, it is easy to install with `apt`.)
 
 The lights are controlled with a "hat" with four mains voltage relays on it:
 
@@ -43,9 +33,41 @@ In order to avoid aggravating the overheating problem, I purchased an extension 
 
 Instead of slapping an adapter on a standard Female to Female cable, you can also buy Female to Male 40 Pin cables, but for some reason they are considerably more expensive. The Male-to-Male adapter shown here seems to work just fine.
 
-With all of these bits assembled, the rest is all in software. I installed Armbian 23.02.2, which is linked to from the Le Potato official product page:
+With all of these bits assembled, the rest is all in software. I installed Ubuntu 22.04.1, which is linked to from the Le Potato official product page:
 
-* [Armbian for Libre Computer boards](https://www.armbian.com/download/?tx_maker=libre-computer)
+* [Ubuntu for Libre Computer boards](https://distro.libre.computer/ci/ubuntu/22.04/)
+
+Basic configuration of the OS:
+
+* `dpkg-reconfigure console-setup` to change the font. (The largest possible font makes it much easier to use when it's up on a TV screen across the room.)
+* `timedatectl set-timezone America/Winnipeg` sets the correct timezone. This appears to persist across reboots.
+* Listing files in `/sys/class/net` identifies the name of the Wi-Fi adapter. In this case, `wlx3420032e4801`. I assume that's a MAC address or something, so yours will likely be completely different.
+* Network configuration in `/etc/netplan/50-cloud-init.yaml`:
+
+```
+network:
+  wifis:
+    wlx3420032e4801:
+      optional: true
+      access-points:
+        "Name of network":
+          password: "password"
+      dhcp4: true
+```
+
+* Installation of PowerShell by downloading the package from Microsoft's GitHub releases.
+  * At the time of writing this, the latest release is 7.3.4, at the following URL:
+    * `https://github.com/PowerShell/PowerShell/releases/download/v7.3.4/powershell-7.3.4-linux-arm64.tar.gz`
+  * Installation:
+```
+mkdir /powershell
+cd /powershell
+tar zvfx /tmp/powershell-7.3.4-linux-arm64.tar.gz
+```
+
+* This repository: `cd / ; git clone https://github.com/logiclrd/lights`
+* User account to run the `lights` service: `adduser lights`
+* Grant the `lights` user access to GPIO: `usermod -a -G dialout lights`
 
 The first step was to figure out _how_ to talk to the GPIO pins.
 
