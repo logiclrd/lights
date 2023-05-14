@@ -1,28 +1,30 @@
 # Lights
 
-I am using a Banana Pi M64 currently:
+I am using a Libre Computer Le Potato currently:
 
-* [Banana Pi BPI-M64 Product Page](https://banana-pi.org/en/banana-pi-sbcs/41.html)
-* [Banana Pi BPI-M64 Wiki Page](https://wiki.banana-pi.org/Banana_Pi_BPI-M64)
-* [Purchase on Amazon: youyeetoo Banana Pi BPI-M64](https://amazon.ca/dp/B08FZY7JHD)
+* [Libre Computer "Le Potato" (AML-S905X-CC) Product Page](https://libre.computer/products/aml-s905x-cc/)
+* [Libre Computer "Le Potato" Hub - Resources & Guides](https://hub.libre.computer/t/aml-s905x-cc-le-potato-overview-resources-and-guides/288)
+* [Purchase on Amazon: Libre Computer Board AML-S905X-CC by LoveRPi](https://amazon.ca/dp/B074N5B8KZ)
 
-The first thing I found with this machine is that, unlike a Raspberry Pi, it does not power on automatically. It has a physical "Power" button that you have to press each time you want it to power on. This isn't compatible with using it as an appliance. I did a search on how to make it power on automatically. I found a forum thread where someone said all you have to do is hold down the "Power On" button for 8 seconds and then it'll remember that you want it on all the time. I did this and it appeared to work. :-)
+I originally tried to do the build with a Banana Pi M64, but unfortunately their design runs exclusively on 3.3V and doesn't bother to power the 5V pins on the GPIO connector. The relay board (below) requires 5V and thus doesn't function on the Banana Pi M64. It does function on Le Potato, though :-)
 
 As with any Pi type computer, this requires a Micro SD card to act as the "hard drive". I bought this one:
 
 * [Purchase on Amazon: SanDisk 32GB Extreme microSDHC UHS-1](https://amazon.ca/dp/B06XWMQ81P)
 
-I encountered problems with the Banana Pi M64 overheating while doing such mundane tasks as compiling code. To combat this, I installed heat sinks:
+In my early attempts with the Banana Pi M64, I encountered problems with it overheating while doing such mundane tasks as compiling code. To combat this, I installed heat sinks:
 
 * [Purchase on Amazon: Enokay 8 Pieces 14x12x5.5mm Cooling Copper Heatsink](https://amazon.ca/dp/B014KKY3KI)
 
-Ultimately, what made the biggest difference was altering the OS's power management policies to `powersave`, which wa sdone by putting the line:
+Ultimately, what made the biggest difference was altering the OS's power management policies to `powersave`, which was done by putting the line:
 
 ```
 GOVERNOR=powersave
 ```
 
 ...into the file `/etc/default/cpufrequtils`. This application doesn't need a blazing-fast computer, and it probably saves a few pennies of electricity to run it slower. :-)
+
+This same configuration can be used with Le Potato.
 
 The lights are controlled with a "hat" with four mains voltage relays on it:
 
@@ -35,10 +37,9 @@ In order to avoid aggravating the overheating problem, I purchased an extension 
 
 Instead of slapping an adapter on a standard Female to Female cable, you can also buy Female to Male 40 Pin cables, but for some reason they are considerably more expensive. The Male-to-Male adapter shown here seems to work just fine.
 
-With all of these bits assembled, the rest is all in software. I installed Armbian 22.11.0, which has a build linked to from the Banana Pi official Wiki page:
+With all of these bits assembled, the rest is all in software. I installed Armbian 23.02.2, which is linked to from the Le Potato official product page:
 
-* [Banana Pi BPI-M64 Wiki Page - Ubuntu](https://wiki.banana-pi.org/Banana_Pi_BPI-M64#Ubuntu)
-* [Direct download link as of mid-February 2023, may stop working](https://drive.google.com/file/d/1_BaSpSdIaxJYy-QjaXLsOrJ25Ja7vA78/view)
+* [Armbian for Libre Computer boards](https://www.armbian.com/download/?tx_maker=libre-computer)
 
 The first step was to figure out _how_ to talk to the GPIO pins. I discovered that the most straightforward way to do this, at least on this particular platform, is via the filesystem, which has dev nodes that interact with GPIO.
 
