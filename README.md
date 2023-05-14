@@ -69,7 +69,7 @@ tar zvfx /tmp/powershell-7.3.4-linux-arm64.tar.gz
 * User account to run the `lights` service: `adduser lights`
 * Grant the `lights` user access to GPIO: `usermod -a -G dialout lights`
 
-The first step was to figure out _how_ to talk to the GPIO pins.
+On the software side, the first step was to figure out _how_ to talk to the GPIO pins.
 
 On the Banana Pi M64, the most straightforward way to do this seems to be via the filesystem, which has dev nodes that interact with GPIO. However, on the Libre Computer device, this interface is officially deprecated, and instead they would like you to use `gpioset`, which comes installed as part of the `gpiod` package.
 
