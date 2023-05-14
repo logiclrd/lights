@@ -26,6 +26,10 @@ GOVERNOR=powersave
 
 This same configuration can be used with Le Potato.
 
+The Le Potato does not have an integrated Wi-Fi adapter. This USB device seems to do the trick:
+
+* [Purchase on Amazon: Mini USB WiFi Adapter 300mbps 2.4GHz](https://amazon.ca/gp/product/B07FDQ217P)
+
 The lights are controlled with a "hat" with four mains voltage relays on it:
 
 * [Purchase on Amazon: RPi Power Relay Board Expansion Module](https://amazon.ca/dp/B08B681CYD)
