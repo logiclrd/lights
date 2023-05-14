@@ -90,6 +90,12 @@ Finally, the actual scheduling engine was written using PowerShell. The current 
 
 The scheduling engine `Run-Schedule.ps1` is invoked using `systemctl`. A definition for a `systemctl` service was created, and a copy of it is committed to this repository in the `systemctl` subdirectory. I created a regular user `lights` to run the persistent script, and the `init` script updates the permission bits on the `value` dev nodes so that code doesn't need to be `root` to control the lights.
 
+The service needs to be "enabled" to be run automatically on system startup:
+
+```
+systemctl enable lights
+```
+
 You can inspect the current state of the `lights` service with the command:
 
 ```
