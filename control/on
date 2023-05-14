@@ -2,6 +2,4 @@
 
 pin=$(cat /lights/pins/$1)
 
-echo 0 > /sys/class/gpio/gpio$pin/value
-
-
+/usr/bin/gpioset 1 $pin=0

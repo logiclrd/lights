@@ -12,6 +12,10 @@ As with any Pi type computer, this requires a Micro SD card to act as the "hard 
 
 * [Purchase on Amazon: SanDisk 32GB Extreme microSDHC UHS-1](https://amazon.ca/dp/B06XWMQ81P)
 
+The Le Potato does not have an integrated Wi-Fi adapter. This USB device seems to do the trick:
+
+* [Purchase on Amazon: Mini USB WiFi Adapter 300mbps 2.4GHz](https://amazon.ca/gp/product/B07FDQ217P)
+
 In my early attempts with the Banana Pi M64, I encountered problems with it overheating while doing such mundane tasks as compiling code. To combat this, I installed heat sinks:
 
 * [Purchase on Amazon: Enokay 8 Pieces 14x12x5.5mm Cooling Copper Heatsink](https://amazon.ca/dp/B014KKY3KI)
@@ -24,11 +28,9 @@ GOVERNOR=powersave
 
 ...into the file `/etc/default/cpufrequtils`. This application doesn't need a blazing-fast computer, and it probably saves a few pennies of electricity to run it slower. :-)
 
+I was running Armbian on the Banana Pi M64, but switched to Ubuntu on the Le Potato, and Ubuntu doesn't come with `cpufrequtils` installed. But, it is easy to install with `apt`.
+
 This same configuration can be used with Le Potato.
-
-The Le Potato does not have an integrated Wi-Fi adapter. This USB device seems to do the trick:
-
-* [Purchase on Amazon: Mini USB WiFi Adapter 300mbps 2.4GHz](https://amazon.ca/gp/product/B07FDQ217P)
 
 The lights are controlled with a "hat" with four mains voltage relays on it:
 
@@ -45,26 +47,22 @@ With all of these bits assembled, the rest is all in software. I installed Armbi
 
 * [Armbian for Libre Computer boards](https://www.armbian.com/download/?tx_maker=libre-computer)
 
-The first step was to figure out _how_ to talk to the GPIO pins. I discovered that the most straightforward way to do this, at least on this particular platform, is via the filesystem, which has dev nodes that interact with GPIO.
+The first step was to figure out _how_ to talk to the GPIO pins.
 
-* GPIO dev nodes live in `/sys/class/gpio`
-* Pins need to be "exported" to be interacted with
-* Exporting a pin is done by opening the dev node `export` and writing the pin number followed by a newline. The driver responds by exposing that pin in a folder containing dev nodes that is linked to from `/sys/class/gpio/gpioPINNUMBER`
-* GPIO pins can be used for input or output. You must explicitly configure the newly-exported pin for output by writing the word "out" to the dev node `direction` in the pin's folder.
-* The state of the pin is controlled by writing 0 or 1 to the dev node `value` in the pin's folder. Experimentally, I found that with this relay board, the logic is reversed; a value of 0 turns the relay on, and a value of 1 turns the relay off.
+On the Banana Pi M64, the most straightforward way to do this seems to be via the filesystem, which has dev nodes that interact with GPIO. However, on the Libre Computer device, this interface is officially deprecated, and instead they would like you to use `gpioset`, which comes installed as part of the `gpiod` package.
 
 With some trial and error, I identified the GPIO pin numbers corresponding to the four relays:
 
-* Relay 0: Pin PL8, pin #360
-* Relay 1: Pin PL7, pin #359
-* Relay 2: Pin PL12, pin #364
-* Relay 3: Pin PB6, pin #38
+* Relay 0: Pin 83
+* Relay 1: Pin 82
+* Relay 2: Pin 84
+* Relay 3: Pin 86
 
-This information is encapsulated in the `pins` subdirectory in this repository.
+(I noticed after setting up this mapping and doing the wiring that the silkscreen on the board lists "LED1" through "LED4" in the _opposite_ order. Oh well :-) )
 
-I created an initialization script that, run as root, exports these four pins. This is in the `init` subdirectory in this repository. I configured this script to run on system startup by referencing it from `/etc/rc.local`.
+The mapping of relay numbers (0..3) to pin numbers is encapsulated in the `pins` subdirectory in this repository.
 
-Then I created a straightforward abstraction of the control mechanism, which is in the `control` subdirectory in this repository. The `on` and `off` scripts take a relay number and do all the necessary translation internally to control the corresponding pin. For instance, `on 1` turns on relay #1, which, behind the scenes, means that it sets the value of pin PL7 to 0.
+Then I created a straightforward abstraction of the control mechanism, which is in the `control` subdirectory in this repository. The `on` and `off` scripts take a relay number and do all the necessary translation internally to control the corresponding pin. For instance, `on 1` turns on relay #1, which, behind the scenes, means that it sets the value of pin #82 to 0.
 
 Finally, the actual scheduling engine was written using PowerShell. The current shebang line assumes a PowerShell installation in `/powershell`. The schedule is defined in a custom-format text file `schedule.txt` in the `schedule` subdirectory, and the script `Run-Schedule.ps1` reads this file in and processes it, turning it into invocations of `control/on` and `control/off`.
 
