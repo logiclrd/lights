@@ -41,6 +41,7 @@ Basic configuration of the OS:
 
 * `dpkg-reconfigure console-setup` to change the font. (The largest possible font makes it much easier to use when it's up on a TV screen across the room.)
 * `timedatectl set-timezone America/Winnipeg` sets the correct timezone. This appears to persist across reboots.
+* In `/etc/default/keyboard`, change `XKBLAYOUT` to `dvorak`. This will take effect after a reboot, but can be applied immediately as well by running `setupcon`.
 * Listing files in `/sys/class/net` identifies the name of the Wi-Fi adapter. In this case, `wlx3420032e4801`. I assume that's a MAC address or something, so yours will likely be completely different.
 * Network configuration in `/etc/netplan/50-cloud-init.yaml`:
 
