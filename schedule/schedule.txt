@@ -1,8 +1,8 @@
 # Aquarium lights schedule
 
 08:00 ON 0
-12:00 OFF 0
-15:00 ON 0
+10:00 OFF 0
+17:00 ON 0
 18:00 ON 2
 19:00 OFF 0
 19:30 ON 1
