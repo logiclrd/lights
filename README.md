@@ -4,6 +4,9 @@ This is a project originally to control the lights on an aquarium on a schedule.
 
 I have now used this solution twice. The second instance is for controlling lights, lamp and water misting on a terrarium in which lives an adorably dumb ball python that my kid named Asha.
 
+* [First Incarnation](https://github.com/logiclrd/lights/blob/main/README.md#first-incarnation-aquarium): Libre Computer "Le Potato"
+* [Second Incarnation](https://github.com/logiclrd/lights/blob/main/README.md#second-incarnation-terrarium): Raspberry Pi Zero 2 W
+
 ## First Incarnation: Aquarium
 
 I am using a Libre Computer Le Potato currently:
