@@ -2,4 +2,4 @@
 
 pin=$(cat /lights/pins/$1)
 
-/usr/bin/gpioset 1 $pin=0
+/usr/bin/gpioset 0 $pin=0
