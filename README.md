@@ -1,5 +1,11 @@
 # Lights
 
+This is a project originally to control the lights on an aquarium on a schedule. Leaving the lights on 24/7 hugely promotes the growth of algae, so the fish have to be content with just a few hours each day. :-)
+
+I have now used this solution twice. The second instance is for controlling lights, lamp and water misting on a terrarium in which lives an adorably dumb ball python that my kid named Asha.
+
+## First Incarnation: Aquarium
+
 I am using a Libre Computer Le Potato currently:
 
 * [Libre Computer "Le Potato" (AML-S905X-CC) Product Page](https://libre.computer/products/aml-s905x-cc/)
@@ -121,3 +127,29 @@ Feb 15 15:00:00 bananapim64 RunSchedule.ps1[4019]: Sleeping for 90 minutes
 I investigated NTP time synchronization as well, because I'm not sure how reliable the wall clock is on a Banana Pi M64, but I've decided to give it the benefit of the doubt. The NTP synchronization code is committed to the repository but I'm not currently using it.
 
 Finally, this all needs to go into a case. [That's a different project](https://github.com/logiclrd/OpenSCADDesigns/tree/main/Light%20Controller%20Case), involving OpenSCAD and a 3D printer. :-)
+
+-----------------------
+
+## Second Incarnation: Terrarium
+
+The second time around, the most affordable option was the Raspberry Pi Zero 2 W, a cut-down board. It has few bells and whistles -- in order to save money, they did away with even the power LED, so you have no visual indicator that it is actually on. But, it ticks the boxes for this project:
+
+* It has the GPIO pins needed for the relay hat, and the hat is compatible with it.
+* It has onboard Wi-Fi, so I don't need to plug in a USB Wi-Fi adapter -- which is just as well, because it doesn't have regular USB ports. :-P
+* It runs Raspberry Pi OS, an Ubuntu-based distribution, and imaging it is incredibly easy with the Raspberry Pi Imager tool, which can even inject the Wi-Fi settings as the image is being written to the SD card.
+* The gpiod abstraction and `gpioset` command-line utility around which this code is written come configured and working.
+
+The exact details of the GPIO communication differ from Le Potato.
+
+* The GPIO chip is 0 instead of 1. Change this in `/lights/control/on` and `/lights/control/off` -- the first argument to `gpioset`.
+* The pin numbers are all different. By process of experimentation, I found the mappings:
+    * Relay 0: Pin 19
+    * Relay 1: Pin 26
+    * Relay 2: Pin 20
+    * Relay 3: Pin 21
+
+As with Le Potato, the numbers are sort of all over the place. I'm not really sure what's going on. But, these numbers do the trick. Plonk them into the files in `/lights/pins`.
+
+That's about it, really. The same `systemctl` unit configuration and scheduling code should work. A newer PowerShell version is now available -- I was able to download version 7.5.2 from https://github.com/PowerShell/PowerShell/releases/download/v7.5.2/powershell-7.5.2-linux-arm64.tar.gz, and it installed and ran just as one would expect.
+
+If I design a nifty enclosure for it, I'll try to remember to come back and add it to the repo. :-)
